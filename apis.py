@@ -1,4 +1,5 @@
-from flask import Flask,request,json
+from flask_cors import CORS
+from flask import Flask, jsonify,request,json
 # from exchange import Exchange as exchange
 
 import backoff
@@ -11,17 +12,38 @@ import json
 
 from datetime import datetime, timedelta
 
-import pandas as pd
-
-import statistics
-
 app = Flask(__name__)
+CORS(app)
     
 
 @app.route('/test-api', methods = ['GET'])
 def test_api():
+    name = request.args.get('name', None)
 
-    return json.dumps('{"test: 123}')
+    response = {
+        "name": name
+    }
+    return jsonify({"data": response, "status": 200, "message": "successfully"})
+
+    # return jsonify(response), 200
+
+@app.route('/days-ago', methods = ['GET'])
+def days_ago_api():
+    past_date_str = request.args.get('date_in_the_past', None)
+
+    current_date = datetime.now()
+
+    # Define a past date (replace this with your desired past date)
+    past_date = datetime.strptime(past_date_str, "%Y-%m-%d")
+
+    # Calculate the difference in days
+    days_ago = (current_date - past_date).days
+
+    response = {
+        "daysAgo": days_ago
+    }
+    return jsonify({"data": response, "status": 200, "message": "successfully"})
+
 
 
 if __name__ == '__main__':
