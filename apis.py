@@ -14,6 +14,10 @@ from datetime import datetime, timedelta
 
 app = Flask(__name__)
 CORS(app)
+
+# Start frontend: 
+# - cd frontend
+# - npm run dev
     
 
 @app.route('/test-api', methods = ['GET'])
